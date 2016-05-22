@@ -38,8 +38,7 @@ public class User extends Thread {
 				Message formattedMessage = new Message(message);
 				if (formattedMessage.type != MessageType.Unknown) {
 					for (int i = 0; i < EchoServer.users.size(); i++) {
-						if (EchoServer.users.get(i) != this)
-							EchoServer.users.get(i).send(message);
+						EchoServer.users.get(i).send(message);
 					}
 					if (formattedMessage.type == MessageType.Exit) {
 						try {
@@ -48,8 +47,8 @@ public class User extends Thread {
 						} catch (IOException e) {
 						}
 						out.close();
-						
-						synchronized(EchoServer.users){
+
+						synchronized (EchoServer.users) {
 							EchoServer.users.remove(this);
 						}
 						return;

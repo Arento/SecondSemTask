@@ -5,7 +5,8 @@ import java.net.UnknownHostException;
 
 public class Client {
 	static String name;
-
+	static SocketWriter out;
+	static SocketReader  in;
 	public static void start(String[] args) throws Exception {
 		if (args.length < 3) {
 			System.out.println("Give me three arguments: name, port, host address");
@@ -19,10 +20,10 @@ public class Client {
 			System.exit(-1);
 		}
 
-		SocketWriter out = new SocketWriter(socket);
-		SocketReader in = new SocketReader(socket);
+		out = new SocketWriter(socket);
+		in = new SocketReader(socket);
 
-		out.start();
+		out.write(new Message("name "+name));
 		in.start();
 	}
 }
