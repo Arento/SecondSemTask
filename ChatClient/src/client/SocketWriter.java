@@ -23,7 +23,7 @@ public class SocketWriter extends Thread {
 				input = in.readLine();
 				if (input.equals("--exit--"))
 					break;
-				out.println("text " + input);
+				out.println("text " + input + " " + Client.name);
 
 			} catch (IOException e) {
 				System.out.println("Exception in SocketWriter");
