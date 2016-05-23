@@ -8,7 +8,11 @@ public class Message {
 	MessageType type;
 	String text;
 	String author;
-
+	public Message(int dirtyhack){
+		type = MessageType.Text;
+		author = "";
+		text = "";
+	}
 	public Message(String rawMessage) {
 		String[] message = rawMessage.split(" ");
 		if (message[0].equals("name")) {

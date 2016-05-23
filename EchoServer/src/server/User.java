@@ -5,7 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import server.EchoServer;
+import java.net.SocketException;
+
 import server.Message.MessageType;
 
 public class User extends Thread {
@@ -28,33 +29,40 @@ public class User extends Thread {
 	@Override
 	public void run() {
 		String message = null;
-		while (true) {
+		try {
+			connection.setKeepAlive(true);
+		} catch (SocketException e2) {
+			System.exit(1);
+		}
+		while (!connection.isClosed() && connection.isConnected() && !connection.isInputShutdown()) {
 			try {
 				message = in.readLine();
-			} catch (IOException e) {
-				System.err.println("IOException while recieving message");
-			}
-			if (message != null) {
-				Message formattedMessage = new Message(message);
-				if (formattedMessage.type != MessageType.Unknown) {
-					for (int i = 0; i < EchoServer.users.size(); i++) {
-						EchoServer.users.get(i).send(message);
-					}
-					if (formattedMessage.type == MessageType.Exit) {
-						try {
-							in.close();
-							connection.close();
-						} catch (IOException e) {
+				if (message != null) {
+					Message formattedMessage = new Message(message);
+					if (formattedMessage.type != MessageType.Unknown) {
+						for (int i = 0; i < EchoServer.users.size(); i++) {
+							EchoServer.users.get(i).send(message);
 						}
-						out.close();
-
-						synchronized (EchoServer.users) {
-							EchoServer.users.remove(this);
-						}
-						return;
 					}
 				}
+			} catch (Exception e) {
+				try {
+					close();
+				} catch (Exception e1) {
+					System.exit(-1);
+				}
+				break;
 			}
 		}
+	}
+
+	public void close() throws Exception {
+		in.close();
+		out.close();
+		connection.close();
+		synchronized (EchoServer.users) {
+			EchoServer.users.remove(this);
+		}
+
 	}
 }

@@ -1,5 +1,6 @@
 package client;
 
+import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -7,12 +8,10 @@ public class Client {
 	static String name;
 	static SocketWriter out;
 	static SocketReader  in;
+	static Socket socket;
 	public static void start(String[] args) throws Exception {
-		if (args.length < 3) {
-			System.out.println("Give me three arguments: name, port, host address");
-		}
 		name = args[0];
-		Socket socket = null;
+		socket = null;
 		try {
 			socket = new Socket(args[2],Integer.parseInt(args[1]));
 		} catch (UnknownHostException e1) {
@@ -26,4 +25,11 @@ public class Client {
 		out.write(new Message("name "+name));
 		in.start();
 	}
+	public static void close() throws IOException{
+		out.write(new Message(1));
+		synchronized(socket){
+			socket.close();
+		}
+	}
+	
 }

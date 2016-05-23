@@ -28,6 +28,7 @@ public class EchoServer {
 			try {
 				users.add(new User(serverSocket.accept()));
 				System.out.println("Client connected");
+				System.out.println(users.size());
 				users.lastElement().start();
 				System.out.println("Client started");
 			} catch (IOException e) {

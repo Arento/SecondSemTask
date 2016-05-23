@@ -9,33 +9,26 @@ import client.Message.MessageType;
 
 public class SocketReader extends Thread {
 	BufferedReader in;
+	Socket socket;
 
 	public SocketReader(Socket socket) throws IOException {
+		this.socket = socket;
 		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 	}
 	public void run(){
 		String input = null;
-		while(true)
+		while(!socket.isClosed())
 		{
 			try {
 				input = in.readLine();
-				if(input.equals("--end--"))
-					break;
 				Message message = new Message(input);
 				if(message.type == MessageType.Text)
-					System.out.println("<" + message.author + ">:" + message.text);
+					MainWindow.setMessage("<" + message.author + ">:" + message.text + "\n");
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				break;
 			}
-			
 		}
-		try {
-			in.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return;
+		
+		
 	}
 }
