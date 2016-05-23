@@ -48,7 +48,7 @@ public class MainWindow extends JFrame {
 					connect.setEnabled(false);
 					disconnect.setEnabled(true);
 				} catch (Exception e1) {
-					e1.printStackTrace();
+					System.out.println("Client cannot connect");
 				}
 			}
 		});
