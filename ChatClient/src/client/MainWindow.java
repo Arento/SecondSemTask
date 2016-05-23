@@ -30,7 +30,7 @@ public class MainWindow extends JFrame {
 		textField = new JTextField();
 		textField.setEnabled(true);
 		setTitle("Chat Client");
-		setSize(300, 200);
+		setSize(300, 400);
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		JTextField nameField = new JTextField(16);
@@ -38,6 +38,7 @@ public class MainWindow extends JFrame {
 		JTextField portField = new JTextField(5);
 		JButton connect = new JButton("Connect");
 		JButton disconnect = new JButton("Disconnect");
+		disconnect.setEnabled(false);
 		connect.setActionCommand("connect");
 		connect.addActionListener(new ActionListener() {
 			@Override

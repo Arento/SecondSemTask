@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.Vector;
 
-import server.User;
-
 public class EchoServer {
 	static Vector<User> users;
 
@@ -28,9 +26,8 @@ public class EchoServer {
 			try {
 				users.add(new User(serverSocket.accept()));
 				System.out.println("Client connected");
-				System.out.println(users.size());
+				System.out.println("Clients connected: " + users.size());
 				users.lastElement().start();
-				System.out.println("Client started");
 			} catch (IOException e) {
 				System.out.println("IOExsception while adding new connection");
 			}

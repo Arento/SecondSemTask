@@ -49,6 +49,8 @@ public class User extends Thread {
 				try {
 					close();
 				} catch (Exception e1) {
+					System.out.println("Uncaugth Exception, server shutdown.");
+					e1.printStackTrace();
 					System.exit(-1);
 				}
 				break;
@@ -63,6 +65,7 @@ public class User extends Thread {
 		synchronized (EchoServer.users) {
 			EchoServer.users.remove(this);
 		}
+		System.out.println("Client disconnected");
 
 	}
 }
